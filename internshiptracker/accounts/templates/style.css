@@ -1,0 +1,133 @@
+body.home {
+    background-color: #5B3A52;
+}
+body.log {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url("back.png") no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: auto auto;
+    text-align: center;
+    padding: 20px;
+    }
+.container div {
+    text-align: left;
+    font-size: 150%;
+    color: #eee4db;
+}
+
+h1 {
+    font-weight: bold;
+    }
+
+.button {
+    background-color: #B9926A;
+    border: none;
+    color: #eee4db;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: #bea58c;
+}
+.login {
+    width: 420px;
+    /* background: #6a4c62; */
+    background: transparent;
+    border: #bea58c;
+    backdrop-filter: blur(20px);
+    color: #bea58c;
+    border-radius: 10px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.login h1 {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+.login .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid #bea58c;
+    border-radius: 40px;
+    font-size: 16px;
+    color:#bea58c;
+    padding: 0 45px 0 20px;
+    box-sizing: border-box;
+}
+.input-box input::placeholder {
+    color:#bea58c;
+}
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+.login .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: -15px 0 15px;
+}
+.remember-forgot label input {
+    accent-color: #bea58c;
+    margin-right: 3px;
+}
+.remember-forgot a {
+    color: #bea58c;
+    text-decoration: none;
+}
+.remember-forgot a {
+    text-decoration: underline;
+}
+.login .btn {
+    width: 100%;
+    height: 45px;
+    background: #bea58c;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #5B3A52;
+    font-weight: 600;
+}
+.login .register {
+    font-size: 14px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+.register p a {
+    color: #bea58c;
+    text-decoration: none;
+    font-weight: 600;
+}
+.register p a:hover{
+    text-decoration: underline;
+}

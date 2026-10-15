@@ -4,46 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body>
-    <div class="container mt-5">
-        <!-- Login form -->
-        <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
-            <h1 style="text-align: center;"><span style="color: rgb(38, 0, 128);">Log in</span></h1>
-
-            {% csrf_token %}  <!-- CSRF token for security -->
-
-            <!-- Login heading -->
-            <hr>
-
-            <!-- Display error/success messages -->
+<body class="log">
+    <div class="login">
+        <form action="">
+            <h1 >Log in</h1>
+            <!-- {% csrf_token %}  <!-- CSRF token for security
             {% if messages %}
-            <div class="alert alert-primary" role="alert">
+            <div>
                 {% for message in messages %}
                 {{ message }}
                 {% endfor %}
             </div>
-            {% endif %}
-
-            <!-- Username input field -->
-            <div class="form-group">
-                <label for="exampleInputEmail1">Username</label>
-                <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    placeholder="Enter username" required>
+            {% endif %} -->
+            <div class="input-box">
+                <input type="text" placeholder="Username" required>
+                <i class='bx bxs-user'></i>
             </div>
-
-            <!-- Password input field -->
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+            <div class="input-box">
+                <input type="password" placeholder="Password" required>
+                <i class='bx bxs-lock-alt' ></i>
             </div>
-
-            <!-- Link to registration page -->
-            <p>Don't have an account <a href="/register/">Register</a> </p>
-
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="remember-forgot">
+                <label><input type="checkbox"> Remember me</label>
+                <a href="#">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+            <div class="register">
+                <p>Don't have an account? <a href="register.html">Register</a></p>
+            </div>
+            
         </form>
     </div>
 </body>
