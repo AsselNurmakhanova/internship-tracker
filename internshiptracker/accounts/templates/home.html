@@ -1,19 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title style="color: rgb(38, 0, 128);">InternTrack</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
 </head>
 <body class="home">
+    <div class="topnav">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#reviews">Reviews</a>
+        <a href="faq">FAQ</a>
+        <a href="{% url 'login' %}">Log in</a>
+        <a href="{% url 'signup' %}">Sign up</a>
+    </div>
     <div class="container">
         <div>
             <h1>Your career journey, all in one place</h1>
             <p>Finding an internship shouldn't mean juggling dozens of tabs, forgotten deadlines, and scattered application details. Trackly brings your entire internship search into one organized workspace. Keep track of saved opportunities, manage applications, monitor interview progress, and stay on top of follow-ups — all from a single dashboard. Import your job data from LinkedIn and other supported platforms to spend less time organizing and more time preparing for your next opportunity. Stay organized. Take action. Land your next opportunity.</p>
         </div>
         <div>
-            <img src="https://media.tenor.com/3YunLjG4jrEAAAAM/sendy-cat-meme.gif" alt="silly cat">
+            <img src="https://media.tenor.com/3YunLjG4jrEAAAAM/sendy-cat-meme.gif" alt="silly cat" style="margin-top: 80px;">
         </div>
         <div>
             <a href="login.html" class="button">Log In</a>
