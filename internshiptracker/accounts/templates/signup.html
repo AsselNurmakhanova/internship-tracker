@@ -4,63 +4,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
     <link href="{% static 'style.css' %}" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>Registration Form</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container mt-5">
-        <!-- Registration form -->
-        <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
-            {% csrf_token %}  <!-- CSRF token for security -->
 
-            <!-- Registration form heading -->
-            <h1 style="text-align: center;"><span style="color: rgb(38, 0, 128);">Register</span></h1>
-            <h3>Register</h3>
-            <hr>
-
-            <!-- Display error/success messages -->
+<body class="log">
+    <div class="login">
+        <form method="POST" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <h1>Sign Up</h1>
             {% if messages %}
-            <div class="alert alert-primary" role="alert">
-                {% for message in messages %}
-                {{ message }}
-                {% endfor %}
-            </div>
+                <div class="messages">
+                    {% for message in messages %}
+                        <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
             {% endif %}
-
-            <!-- First Name input field -->
-            <div class="form-group">
-                <label for="exampleInputEmail1">First name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    placeholder="Enter First name" name="first_name" required>
+            <div class="input-box">
+                <input
+                    type="text"
+                    name="first_name"
+                    placeholder="First Name"
+                    autocomplete="given-name"
+                    required>
+                <i class="bx bxs-user"></i>
             </div>
-
-            <!-- Last Name input field -->
-            <div class="form-group">
-                <label for="exampleInputEmail1">Last name</label>
-                <input type="text" name="last_name" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" placeholder="Enter Last name" required>
+            <div class="input-box">
+                <input
+                    type="text"
+                    name="last_name"
+                    placeholder="Last Name"
+                    autocomplete="family-name"
+                    required>
+                <i class="bx bxs-user"></i>
             </div>
-
-            <!-- Username input field -->
-            <div class="form-group">
-                <label for="exampleInputEmail1">Username</label>
-                <input type="text" class="form-control" name="username" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" placeholder="Enter email" required>
+            <div class="input-box">
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    autocomplete="username"
+                    required>
+                <i class="bx bxs-user"></i>
             </div>
-
-            <!-- Password input field -->
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" name="password" id="exampleInputPassword1"
-                    placeholder="Password" required>
+            <div class="input-box">
+                <input
+                    type="text"
+                    name="email"
+                    placeholder="Email"
+                    autocomplete="email"
+                    required>
+                <i class="bx bxs-user"></i>
             </div>
-
-            <!-- Link to login page for users who already have an account -->
-            <p>Already have an account <a href="/login/">Login</a> </p>
-
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="input-box">
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    autocomplete="new-password"
+                    required>
+                <i class="bx bxs-lock-alt"></i>
+            </div>
+            <button type="submit" class="btn">Create Account</button>
+            <div class="register">
+                <p>Already have an account?<a href="{% url 'login' %}">Log in</a></p>
+            </div>
         </form>
     </div>
 </body>

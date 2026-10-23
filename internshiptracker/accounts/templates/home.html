@@ -13,9 +13,9 @@
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
         <a href="#reviews">Reviews</a>
-        <a href="faq">FAQ</a>
-        <a href="{% url 'login' %}">Log in</a>
-        <a href="{% url 'signup' %}">Sign up</a>
+        <a href="#faq">FAQ</a>
+        <a href="/login/">Log in</a>
+        <a href="/signup/">Sign up</a>
     </div>
     <div class="container">
         <div>
@@ -26,8 +26,8 @@
             <img src="https://media.tenor.com/3YunLjG4jrEAAAAM/sendy-cat-meme.gif" alt="silly cat" style="margin-top: 80px;">
         </div>
         <div>
-            <a href="login.html" class="button">Log In</a>
-            <a href="register.html" class="button">Register</a>
+            <a href="{% url 'login' %}" class="button">Log In</a>
+            <a href="{% url 'signup' %}" class="button">Register</a>
         </div>
     </div>
 </body>
