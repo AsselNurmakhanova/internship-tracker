@@ -72,6 +72,22 @@ h1 {
 .button:hover {
     background-color: #bea58c;
 }
+.section {
+    padding-top: 95px;
+    padding-bottom: 95px;
+}
+.how {
+    background: #B9926A;
+}
+.why {
+    background: #5B3A52;
+}
+.faq {
+    background: #B9926A;
+}
+.final 
+
+/* Log in and sign up */
 .login {
     width: 420px;
     /* background: #6a4c62; */

@@ -42,3 +42,6 @@ def signup_page(request):
         messages.success(request, "Account created successfully!")
         return redirect('login')
     return render(request, 'signup.html')
+
+def main_page(request):
+    return render(request, 'accounts/main.html')

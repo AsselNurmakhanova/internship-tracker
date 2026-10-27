@@ -11,3 +11,5 @@ Internship Tracker is a tool designed to help you organize and manage all your i
 With Internship Tracker, you can easily monitor the status of each application, keep track of important dates, store relevant links and notes, and stay on top of upcoming interviews or follow-up deadlines.
 
 **_Your internship search doesn't have to be chaotic. Stay organized, save time, and focus on what really matters: finding the right opportunity to kick-start your career._**
+
+## Plan for future development
