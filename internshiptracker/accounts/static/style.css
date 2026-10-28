@@ -3,7 +3,7 @@ body.home {
     margin: 0;
     padding: 0;
 }
-body.log {
+.login-page {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -88,90 +88,190 @@ h1 {
 .final 
 
 /* Log in and sign up */
-.login {
-    width: 420px;
-    /* background: #6a4c62; */
-    background: transparent;
-    border: #bea58c;
-    backdrop-filter: blur(20px);
+.login-page {
+    min-height: 100vh;
+    margin: 0;
+    background: #5B3A52;
     color: #bea58c;
-    border-radius: 10px;
-    padding: 30px 40px;
+    font-family: Arial, sans-serif;
+}
+
+.login-card {
+    max-width: 420px;
+    padding: 35px 40px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid #bea58c;
+    border-radius: 15px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.login h1 {
+
+.login-card h1 {
     font-size: 40px;
-    text-align: center;
-    margin-bottom: 25px;
+    font-weight: 700;
+    color: #bea58c;
 }
-.login .input-box {
+
+.form-group-icon {
     position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 30px 0;
 }
-.input-box input {
-    width: 100%;
-    height: 100%;
+
+.custom-input {
+    height: 50px;
+    padding: 0 45px 0 20px;
+    color: #bea58c;
     background: transparent;
-    border: none;
-    outline: none;
     border: 2px solid #bea58c;
     border-radius: 40px;
     font-size: 16px;
-    color:#bea58c;
-    padding: 0 45px 0 20px;
-    box-sizing: border-box;
+    box-shadow: none !important;
 }
-.input-box input::placeholder {
-    color:#bea58c;
+
+.custom-input::placeholder {
+    color: #bea58c;
+    opacity: 1;
 }
-.input-box i {
+
+.custom-input:focus {
+    color: #bea58c;
+    background: transparent;
+    border-color: #ffffff;
+    outline: none;
+}
+
+.form-group-icon i {
     position: absolute;
-    right: 20px;
     top: 50%;
+    right: 18px;
     transform: translateY(-50%);
-    font-size: 20px;
+    font-size: 21px;
+    color: #bea58c;
+    pointer-events: none;
 }
-.login .remember-forgot {
+
+.remember-forgot {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
     font-size: 14px;
-    margin: -15px 0 15px;
+    margin-bottom: 20px;
 }
-.remember-forgot label input {
+
+.remember-forgot .form-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding-left: 0;
+    white-space: nowrap;
+}
+
+.remember-forgot .form-check-input {
+    float: none;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    flex-shrink: 0;
     accent-color: #bea58c;
-    margin-right: 3px;
 }
-.remember-forgot a {
-    color: #bea58c;
-    text-decoration: none;
-}
-.remember-forgot a {
-    text-decoration: underline;
-}
-.login .btn {
-    width: 100%;
-    height: 45px;
-    background: #bea58c;
-    border: none;
-    outline: none;
-    border-radius: 40px;
-    cursor: pointer;
-    font-size: 16px;
-    color: #5B3A52;
-    font-weight: 600;
-}
-.login .register {
+
+.remember-forgot .form-check-label {
     font-size: 14px;
-    text-align: center;
-    margin: 20px 0 15px;
+    line-height: 1.4;
 }
-.register p a {
+
+.remember-forgot .custom-link {
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.custom-link {
     color: #bea58c;
     text-decoration: none;
-    font-weight: 600;
 }
-.register p a:hover{
+
+.custom-link:hover {
+    color: #ffffff;
     text-decoration: underline;
+}
+
+.login-btn {
+    min-height: 45px;
+    color: #5B3A52;
+    background: #bea58c;
+    border: 2px solid #bea58c;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover,
+.login-btn:focus {
+    color: #bea58c;
+    background: transparent;
+    border-color: #bea58c;
+}
+
+.register-text {
+    font-size: 14px;
+    color: #bea58c;
+}
+
+/* Responsive spacing */
+@media (max-width: 576px) {
+    .login-card {
+        padding: 30px 22px;
+    }
+
+    .login-card h1 {
+        font-size: 34px;
+    }
+}
+
+/* Signup card */
+.signup-card {
+    max-width: 450px;
+    padding: 30px 40px;
+}
+
+/* Signup heading */
+.signup-card h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #bea58c;
+}
+
+/* Consistent signup inputs */
+.signup-card .custom-input {
+    height: 48px;
+}
+
+/* Signup input spacing */
+.signup-card .form-group-icon {
+    margin-bottom: 16px;
+}
+
+/* Create Account button */
+.signup-card .login-btn {
+    min-height: 45px;
+}
+
+/* Signup message styling */
+.signup-card .alert {
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+@media (max-width: 576px) {
+    .signup-card {
+        padding: 25px 22px;
+    }
+
+    .signup-card h1 {
+        font-size: 32px;
+    }
 }

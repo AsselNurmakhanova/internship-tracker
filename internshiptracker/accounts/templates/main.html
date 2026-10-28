@@ -1,25 +1,83 @@
-{ % load static % }
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sign Up</title>
-        <link href="{% static 'main.css' %}" rel="stylesheet">
-        <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-            rel="stylesheet">
-    </head>
-    <body>
-        <div class="sidenav">
-            <a href="#">Link</a>
-            <a href="#">Link</a>
-            <a href="#">Link</a>
-        </div>
 
-        <div class="content">
-            <h2>CSS Template</h2>
-            <p>A full-height, fixed sidenav and content.</p>
-        </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Tracker</title>
 
-    </body>
-</html>
+    <link href="{% static 'main.css' %}" rel="stylesheet">
+    <script src="{% static 'js/htmx.min.js' %}" defer></script>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidenav">
+        <h2>InternTrack</h2>
+        <a href="{% url 'internship_list' %}">Dashboard</a>
+        <a href="#">My Internships</a>
+        <a href="#">Add Internship</a>
+        <a href="#">Settings</a>
+    </aside>
+    <main class="content">
+        <h1>My Internship Applications</h1>
+        <p>Track your applications and update their progress.</p>
+
+        <form hx-target="this" hx-swap="outerHTML">
+            {% csrf_token %}
+            <div id="action-bar" class="action-bar">
+                <span>With selected:</span>
+                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="wishlist">
+                    Wishlist
+                </button>
+                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="applied">
+                    Applied
+                </button>
+                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="assessment">
+                    Assessment
+                </button>
+                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="interview">
+                    Interview
+                </button>
+                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="offer">
+                    Offered
+                </button>
+                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="rejected">
+                    Rejected
+                </button>
+                <button hx-post="{% url 'bulk_delete_internships' %}" hx-confirm="Delete selected internships?">
+                    Delete
+                </button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Company</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Date applied</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for internship in internships %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="selected" value="{{ internship.pk }}">
+                        </td>
+                        <td>{{ internship.company }}</td>
+                        <td>{{ internship.role }}</td>
+                        <td>{{ internship.get_status_display }}</td>
+                        <td>{{ internship.date_applied|date:"Y-m-d"|default:"—" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No internships found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+
+    </main>

@@ -32,3 +32,21 @@ body {
   margin-left: 200px;
   padding-left: 20px;
 }
+.action-bar {
+    display: none;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+form:has(input[name="selected"]:checked) .action-bar {  /* shpw actions when intern selected */
+    display: flex;
+}
+
+tr:has(input[name="selected"]:checked) {
+    background: #eff6ff;
+}
