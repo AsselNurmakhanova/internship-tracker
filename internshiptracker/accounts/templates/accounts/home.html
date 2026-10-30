@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title style="color: rgb(38, 0, 128);">Welcome to my site</title>
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+{% block styles %}
     <style>
         .container {
             text-align: center;
@@ -24,8 +22,9 @@
             width: 60%;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <!-- Page heading -->
         <h1>Welcome to Geeksforgeeks </h1>
@@ -34,5 +33,4 @@
         <!-- Use "welcome.gif" as the source for the GIF -->
         <img src="https://i.ibb.co/RNB6jpM/welcome.gif" alt="Welcome Cartoon">
     </div>
-</body>
-</html>
+{% endblock %}

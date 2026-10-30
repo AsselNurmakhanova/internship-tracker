@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .models import *
+from django.views.decorators.http import require_POST
+from .forms import InternshipForm
+from .models import Internship
 
 def home(request):
     return render(request, 'home.html')
@@ -21,7 +23,7 @@ def login_page(request):
             return redirect('login')
         else:
             login(request, user)
-            return redirect('home') 
+            return redirect('main')
     return render(request, 'login.html')
 
 def signup_page(request):
@@ -43,5 +45,27 @@ def signup_page(request):
         return redirect('login')
     return render(request, 'signup.html')
 
+
+@require_POST
+def logout_page(request):
+    logout(request)
+    return redirect('login')
+
+
+@login_required(login_url='login')
 def main_page(request):
-    return render(request, 'accounts/main.html')
+    form_data = request.POST if request.method == 'POST' else None
+    form = InternshipForm(form_data)
+    if request.method == 'POST' and form.is_valid():
+        internship = form.save(commit=False)
+        internship.user = request.user
+        internship.save()
+        messages.success(request, 'Internship added to your tracker.')
+        return redirect('main')
+
+    internships = Internship.objects.filter(user=request.user)
+    return render(request, 'main.html', {
+        'internships': internships,
+        'form': form,
+        'show_add_modal': request.method == 'POST' and form.errors,
+    })

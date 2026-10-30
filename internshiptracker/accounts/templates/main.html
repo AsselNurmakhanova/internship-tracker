@@ -1,83 +1,243 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}Applications{% endblock %}
+{% block body_class %}dashboard-shell{% endblock %}
+{% block styles %}<link href="{% static 'main.css' %}" rel="stylesheet">{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Internship Tracker</title>
-
-    <link href="{% static 'main.css' %}" rel="stylesheet">
-    <script src="{% static 'js/htmx.min.js' %}" defer></script>
-</head>
-
-<body>
-    <!-- Sidebar -->
-    <aside class="sidenav">
-        <h2>InternTrack</h2>
-        <a href="{% url 'internship_list' %}">Dashboard</a>
-        <a href="#">My Internships</a>
-        <a href="#">Add Internship</a>
-        <a href="#">Settings</a>
-    </aside>
-    <main class="content">
-        <h1>My Internship Applications</h1>
-        <p>Track your applications and update their progress.</p>
-
-        <form hx-target="this" hx-swap="outerHTML">
-            {% csrf_token %}
-            <div id="action-bar" class="action-bar">
-                <span>With selected:</span>
-                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="wishlist">
-                    Wishlist
-                </button>
-                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="applied">
-                    Applied
-                </button>
-                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="assessment">
-                    Assessment
-                </button>
-                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="interview">
-                    Interview
-                </button>
-                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="offer">
-                    Offered
-                </button>
-                <button hx-post="{% url 'bulk_update_status' %}" name="status" value="rejected">
-                    Rejected
-                </button>
-                <button hx-post="{% url 'bulk_delete_internships' %}" hx-confirm="Delete selected internships?">
-                    Delete
-                </button>
+{% block content %}
+    <aside class="sidebar d-none d-lg-flex">
+        <a class="brand" href="{% url 'main' %}">
+            <span class="brand-mark"><i class="bi bi-compass-fill"></i></span>
+            <span>InternTrack</span>
+        </a>
+        <p class="sidebar-label">WORKSPACE</p>
+        <nav class="sidebar-nav" aria-label="Main navigation">
+            <a class="nav-link active" href="{% url 'main' %}" aria-current="page">
+                <i class="bi bi-grid-1x2-fill"></i><span>Overview</span>
+            </a>
+            <a class="nav-link" href="#internships">
+                <i class="bi bi-briefcase"></i><span>My internships</span>
+            </a>
+        </nav>
+        <div class="sidebar-bottom dropdown">
+            <button class="profile-trigger" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account options">
+                <span class="profile-mark">{{ request.user.first_name|default:request.user.username|slice:":1"|upper }}</span>
+                <span class="profile-copy">
+                    <strong>{{ request.user.first_name|default:request.user.username|default:"Student" }}</strong>
+                    <span>Internship seeker</span>
+                </span>
+                <i class="bi bi-three-dots profile-menu-icon" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown-menu account-menu">
+                <div class="account-menu-heading">Signed in as <strong>{{ request.user.username }}</strong></div>
+                <a class="dropdown-item" href="{% url 'login' %}">
+                    <i class="bi bi-person-switch" aria-hidden="true"></i> Switch account
+                </a>
+                <div class="dropdown-divider"></div>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button class="dropdown-item logout-item" type="submit">
+                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Log out
+                    </button>
+                </form>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Select</th>
-                        <th>Company</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Date applied</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for internship in internships %}
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="selected" value="{{ internship.pk }}">
-                        </td>
-                        <td>{{ internship.company }}</td>
-                        <td>{{ internship.role }}</td>
-                        <td>{{ internship.get_status_display }}</td>
-                        <td>{{ internship.date_applied|date:"Y-m-d"|default:"—" }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5">No internships found.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </form>
+        </div>
+    </aside>
 
+    <div class="mobile-header d-lg-none">
+        <a class="brand" href="{% url 'main' %}">
+            <span class="brand-mark"><i class="bi bi-compass-fill"></i></span>
+            <span>InternTrack</span>
+        </a>
+        <div class="dropdown">
+            <button class="mobile-account" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account options">
+                {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+            </button>
+            <div class="dropdown-menu dropdown-menu-end account-menu">
+                <div class="account-menu-heading">Signed in as <strong>{{ request.user.username }}</strong></div>
+                <a class="dropdown-item" href="{% url 'login' %}">
+                    <i class="bi bi-person-switch" aria-hidden="true"></i> Switch account
+                </a>
+                <div class="dropdown-divider"></div>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button class="dropdown-item logout-item" type="submit">
+                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Log out
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <main class="dashboard-main">
+        <header class="page-heading">
+            <div>
+                <p class="overline">YOUR CAREER, IN MOTION</p>
+                <h1>Application tracker</h1>
+                <p class="page-subtitle">Keep every opportunity and next step in view.</p>
+            </div>
+            <button class="btn btn-1" type="button" data-bs-toggle="modal" data-bs-target="#addInternshipModal">
+                <i class="bi bi-plus-lg" aria-hidden="true"></i> Add internship
+            </button>
+        </header>
+
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="status">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+
+        <section class="summary-row" aria-label="Application summary">
+            <div class="summary-icon"><i class="bi bi-briefcase-fill"></i></div>
+            <div>
+                <span class="summary-label">Applications in your tracker</span>
+                <strong class="summary-number">{{ internships|length }}</strong>
+            </div>
+            <span class="summary-note"><i class="bi bi-check2-circle"></i> Keep your next step close</span>
+        </section>
+
+        <section class="application-section" id="internships">
+            <div class="section-toolbar">
+                <div>
+                    <h2>My internships</h2>
+                    <p>Review your saved roles and application progress.</p>
+                </div>
+                <label class="search-box" for="internship-search">
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    <input id="internship-search" type="search" placeholder="Search roles or companies" autocomplete="off">
+                </label>
+            </div>
+
+            <div class="table-frame">
+                <div class="table-responsive">
+                    <table class="table internship-table align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Company</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Date applied</th>
+                            </tr>
+                        </thead>
+                        <tbody id="internship-rows">
+                            {% for internship in internships %}
+                            <tr class="internship-row" data-status="{{ internship.status|default:''|lower }}">
+                                <td>
+                                    <div class="company-cell">
+                                        <span class="company-mark">{{ internship.company|slice:":1"|upper }}</span>
+                                        <strong>{{ internship.company }}</strong>
+                                    </div>
+                                </td>
+                                <td>{{ internship.role }}</td>
+                                <td><span class="status-pill">{{ internship.get_status_display|default:"Saved" }}</span></td>
+                                <td>{{ internship.date_applied|date:"M j, Y"|default:"Not applied" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr class="empty-row">
+                                <td colspan="4">
+                                    <div class="empty-state">
+                                        <span class="empty-icon"><i class="bi bi-inboxes"></i></span>
+                                        <h3>Your tracker is ready</h3>
+                                        <p>Internship applications will appear here as you add them.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="no-results d-none">
+                                <td colspan="4" class="no-results-message">No applications match that search.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <footer class="dashboard-footer">Good luck, bro</footer>
     </main>
+
+    <div class="modal fade" id="addInternshipModal" tabindex="-1" aria-labelledby="addInternshipTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content add-modal">
+                <div class="modal-header">
+                    <div>
+                        <p class="overline mb-1">NEW OPPORTUNITY</p>
+                        <h2 class="modal-title" id="addInternshipTitle">Add an internship</h2>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'main' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                        {% endif %}
+                        <div class="row g-3">
+                            <div class="col-12 col-sm-6">
+                                <label class="form-label" for="{{ form.company.id_for_label }}">Company</label>
+                                {{ form.company }}
+                                {{ form.company.errors }}
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="form-label" for="{{ form.role.id_for_label }}">Role</label>
+                                {{ form.role }}
+                                {{ form.role.errors }}
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="form-label" for="{{ form.status.id_for_label }}">Status</label>
+                                {{ form.status }}
+                                {{ form.status.errors }}
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label class="form-label" for="{{ form.date_applied.id_for_label }}">Date applied</label>
+                                {{ form.date_applied }}
+                                {{ form.date_applied.errors }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="{{ form.job_url.id_for_label }}">Job posting link <span class="optional-label">Optional</span></label>
+                                {{ form.job_url }}
+                                {{ form.job_url.errors }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="{{ form.notes.id_for_label }}">Notes <span class="optional-label">Optional</span></label>
+                                {{ form.notes }}
+                                {{ form.notes.errors }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-1"><i class="bi bi-check2" aria-hidden="true"></i> Save internship</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block page_scripts %}
+    <script>
+        const searchInput = document.getElementById('internship-search');
+        const internshipRows = [...document.querySelectorAll('.internship-row')];
+        const noResults = document.querySelector('.no-results');
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim().toLowerCase();
+            let visibleRows = 0;
+
+            internshipRows.forEach((row) => {
+                const matches = row.textContent.toLowerCase().includes(query);
+                row.classList.toggle('d-none', !matches);
+                visibleRows += matches ? 1 : 0;
+            });
+
+            noResults.classList.toggle('d-none', !query || visibleRows > 0 || internshipRows.length === 0);
+        });
+
+    </script>
+    {% if show_add_modal %}
+    <script>
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('addInternshipModal')).show();
+    </script>
+    {% endif %}
+{% endblock %}
