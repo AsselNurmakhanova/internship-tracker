@@ -1,0 +1,21 @@
+{% if include_count %}
+<strong class="summary-number" id="internship-count" hx-swap-oob="outerHTML">{{ internship_count }}</strong>
+{% endif %}
+{% for internship in internships %}
+    {% include "internship_row.html" %}
+{% empty %}
+<tr class="empty-row">
+    <td colspan="6">
+        <div class="empty-state">
+            <span class="empty-icon"><i class="bi bi-inboxes"></i></span>
+            {% if search_query %}
+            <h3>No matching applications</h3>
+            <p>Try a different company, role, status, or note.</p>
+            {% else %}
+            <h3>Your tracker is ready</h3>
+            <p>Internship applications will appear here as you add them.</p>
+            {% endif %}
+        </div>
+    </td>
+</tr>
+{% endfor %}

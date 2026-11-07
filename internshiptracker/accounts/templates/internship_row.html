@@ -1,0 +1,35 @@
+<tr id="internship-{{ internship.pk }}" class="internship-row" data-status="{{ internship.status|default:''|lower }}">
+    <td>
+        <div class="company-cell">
+            <span class="company-mark">{{ internship.company|slice:":1"|upper }}</span>
+            <strong>{{ internship.company }}</strong>
+        </div>
+    </td>
+    <td>{{ internship.role }}</td>
+    <td><span class="status-pill">{{ internship.get_status_display|default:"Saved" }}</span></td>
+    <td>{{ internship.date_applied|date:"M j, Y"|default:"Not applied" }}</td>
+    <td>
+        {% if internship.job_url %}
+        <a href="{{ internship.job_url }}" target="_blank" rel="noopener noreferrer">Job posting</a>
+        {% endif %}
+        {% if internship.notes %}
+        <span>{{ internship.notes|truncatechars:80 }}</span>
+        {% endif %}
+    </td>
+    <td class="text-nowrap">
+        <button class="btn btn-sm btn-outline-secondary" type="button"
+                hx-get="{% url 'edit_internship' internship.pk %}"
+                hx-target="closest tr" hx-swap="outerHTML" aria-label="Edit {{ internship.role }}">
+            <i class="bi bi-pencil" aria-hidden="true"></i> Edit
+        </button>
+        <form class="d-inline" method="post" action="{% url 'delete_internship' internship.pk %}"
+              hx-post="{% url 'delete_internship' internship.pk %}" hx-target="#internship-rows"
+              hx-swap="innerHTML" hx-include="#internship-search"
+              hx-confirm="Delete this internship?">
+            {% csrf_token %}
+            <button class="btn btn-sm btn-outline-danger" type="submit" aria-label="Delete {{ internship.role }}">
+                <i class="bi bi-trash" aria-hidden="true"></i> Delete
+            </button>
+        </form>
+    </td>
+</tr>

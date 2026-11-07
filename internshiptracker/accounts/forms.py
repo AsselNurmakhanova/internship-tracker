@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 from .models import Internship
 
 
@@ -13,4 +14,14 @@ class InternshipForm(forms.ModelForm):
 			'date_applied': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
 			'job_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://'}),
 			'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Add a reminder or useful detail'}),
+		}
+
+
+class UserProfileForm(forms.ModelForm):
+	class Meta:
+		model = User
+		fields = ['first_name', 'last_name']
+		widgets = {
+			'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First name'}),
+			'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name'}),
 		}

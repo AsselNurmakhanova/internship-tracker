@@ -12,4 +12,10 @@ With Internship Tracker, you can easily monitor the status of each application, 
 
 **_Your internship search doesn't have to be chaotic. Stay organized, save time, and focus on what really matters: finding the right opportunity to kick-start your career._**
 
+## Built with
+- Django
+- Bootstrap
+- HTMX
+
 ## Plan for future development
+

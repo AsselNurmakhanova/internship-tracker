@@ -1,0 +1,14 @@
+<div id="profile-editor" class="profile-editor d-flex align-items-center gap-2 mt-2">
+    <span class="small text-muted">
+        {{ profile_user.get_full_name|default:profile_user.username }}
+    </span>
+    <button class="btn btn-sm btn-link p-0" type="button"
+            hx-get="{% url 'edit_profile' %}" hx-target="#profile-editor" hx-swap="outerHTML">
+        Edit profile
+    </button>
+</div>
+{% if profile_updated %}
+<span class="profile-mark" id="profile-initial" hx-swap-oob="outerHTML">{{ profile_user.first_name|default:profile_user.username|slice:":1"|upper }}</span>
+<strong id="profile-name" hx-swap-oob="outerHTML">{{ profile_user.first_name|default:profile_user.username|default:"Student" }}</strong>
+<span hx-swap-oob="innerHTML:#mobile-profile-initial">{{ profile_user.first_name|default:profile_user.username|slice:":1"|upper }}</span>
+{% endif %}

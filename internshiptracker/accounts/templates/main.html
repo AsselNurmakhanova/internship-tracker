@@ -21,9 +21,9 @@
         </nav>
         <div class="sidebar-bottom dropdown">
             <button class="profile-trigger" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account options">
-                <span class="profile-mark">{{ request.user.first_name|default:request.user.username|slice:":1"|upper }}</span>
+                <span class="profile-mark" id="profile-initial">{{ request.user.first_name|default:request.user.username|slice:":1"|upper }}</span>
                 <span class="profile-copy">
-                    <strong>{{ request.user.first_name|default:request.user.username|default:"Student" }}</strong>
+                    <strong id="profile-name">{{ request.user.first_name|default:request.user.username|default:"Student" }}</strong>
                     <span>Internship seeker</span>
                 </span>
                 <i class="bi bi-three-dots profile-menu-icon" aria-hidden="true"></i>
@@ -50,7 +50,7 @@
             <span>InternTrack</span>
         </a>
         <div class="dropdown">
-            <button class="mobile-account" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account options">
+            <button class="mobile-account" id="mobile-profile-initial" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account options">
                 {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
             </button>
             <div class="dropdown-menu dropdown-menu-end account-menu">
@@ -75,6 +75,7 @@
                 <p class="overline">YOUR CAREER, IN MOTION</p>
                 <h1>Application tracker</h1>
                 <p class="page-subtitle">Keep every opportunity and next step in view.</p>
+                {% include "profile_display.html" with profile_user=request.user %}
             </div>
             <button class="btn btn-1" type="button" data-bs-toggle="modal" data-bs-target="#addInternshipModal">
                 <i class="bi bi-plus-lg" aria-hidden="true"></i> Add internship
@@ -92,7 +93,7 @@
             <div class="summary-icon"><i class="bi bi-briefcase-fill"></i></div>
             <div>
                 <span class="summary-label">Applications in your tracker</span>
-                <strong class="summary-number">{{ internships|length }}</strong>
+                <strong class="summary-number" id="internship-count">{{ internship_count }}</strong>
             </div>
             <span class="summary-note"><i class="bi bi-check2-circle"></i> Keep your next step close</span>
         </section>
@@ -105,7 +106,12 @@
                 </div>
                 <label class="search-box" for="internship-search">
                     <i class="bi bi-search" aria-hidden="true"></i>
-                    <input id="internship-search" type="search" placeholder="Search roles or companies" autocomplete="off">
+                    <input id="internship-search" name="q" type="search" placeholder="Search roles or companies" autocomplete="off"
+                           value="{{ search_query }}"
+                           hx-get="{% url 'main' %}"
+                           hx-trigger="input changed delay:300ms, search"
+                           hx-target="#internship-rows"
+                           hx-swap="innerHTML">
                 </label>
             </div>
 
@@ -118,35 +124,12 @@
                                 <th scope="col">Role</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Date applied</th>
+                                <th scope="col">Details</th>
+                                <th scope="col"><span class="visually-hidden">Actions</span></th>
                             </tr>
                         </thead>
                         <tbody id="internship-rows">
-                            {% for internship in internships %}
-                            <tr class="internship-row" data-status="{{ internship.status|default:''|lower }}">
-                                <td>
-                                    <div class="company-cell">
-                                        <span class="company-mark">{{ internship.company|slice:":1"|upper }}</span>
-                                        <strong>{{ internship.company }}</strong>
-                                    </div>
-                                </td>
-                                <td>{{ internship.role }}</td>
-                                <td><span class="status-pill">{{ internship.get_status_display|default:"Saved" }}</span></td>
-                                <td>{{ internship.date_applied|date:"M j, Y"|default:"Not applied" }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr class="empty-row">
-                                <td colspan="4">
-                                    <div class="empty-state">
-                                        <span class="empty-icon"><i class="bi bi-inboxes"></i></span>
-                                        <h3>Your tracker is ready</h3>
-                                        <p>Internship applications will appear here as you add them.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            <tr class="no-results d-none">
-                                <td colspan="4" class="no-results-message">No applications match that search.</td>
-                            </tr>
+                            {% include "internship_rows.html" %}
                         </tbody>
                     </table>
                 </div>
@@ -216,25 +199,7 @@
 {% endblock %}
 
 {% block page_scripts %}
-    <script>
-        const searchInput = document.getElementById('internship-search');
-        const internshipRows = [...document.querySelectorAll('.internship-row')];
-        const noResults = document.querySelector('.no-results');
-
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.trim().toLowerCase();
-            let visibleRows = 0;
-
-            internshipRows.forEach((row) => {
-                const matches = row.textContent.toLowerCase().includes(query);
-                row.classList.toggle('d-none', !matches);
-                visibleRows += matches ? 1 : 0;
-            });
-
-            noResults.classList.toggle('d-none', !query || visibleRows > 0 || internshipRows.length === 0);
-        });
-
-    </script>
+    <script src="{% static 'htmx.min.js' %}" defer></script>
     {% if show_add_modal %}
     <script>
         bootstrap.Modal.getOrCreateInstance(document.getElementById('addInternshipModal')).show();

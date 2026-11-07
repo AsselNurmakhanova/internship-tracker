@@ -1,0 +1,50 @@
+<tr id="internship-{{ internship.pk }}">
+    <td colspan="6">
+        <form method="post" action="{% url 'edit_internship' internship.pk %}"
+              hx-post="{% url 'edit_internship' internship.pk %}"
+              hx-target="closest tr" hx-swap="outerHTML">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+            <div class="row g-2 align-items-end">
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="{{ form.company.id_for_label }}">Company</label>
+                    {{ form.company }}
+                    {{ form.company.errors }}
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="{{ form.role.id_for_label }}">Role</label>
+                    {{ form.role }}
+                    {{ form.role.errors }}
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="{{ form.status.id_for_label }}">Status</label>
+                    {{ form.status }}
+                    {{ form.status.errors }}
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="{{ form.date_applied.id_for_label }}">Date applied</label>
+                    {{ form.date_applied }}
+                    {{ form.date_applied.errors }}
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="{{ form.job_url.id_for_label }}">Job posting link</label>
+                    {{ form.job_url }}
+                    {{ form.job_url.errors }}
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="{{ form.notes.id_for_label }}">Notes</label>
+                    {{ form.notes }}
+                    {{ form.notes.errors }}
+                </div>
+                <div class="col-12 d-flex gap-2">
+                    <button class="btn btn-sm btn-1" type="submit">Save changes</button>
+                    <button class="btn btn-sm btn-light" type="button"
+                            hx-get="{% url 'edit_internship' internship.pk %}?cancel=1"
+                            hx-target="closest tr" hx-swap="outerHTML">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </td>
+</tr>
